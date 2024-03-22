@@ -27,7 +27,7 @@ def main():
     global hosts_path
     hosts_path = args.file
 
-    dockerClient = docker.APIClient(base_url=f"unix://{args.socket}")
+    dockerClient = docker.APIClient(base_url=f'unix://{args.socket}')
     events = dockerClient.events(decode=True)
     #get running containers
     for c in dockerClient.containers(quiet=True, all=False):
@@ -63,7 +63,7 @@ def get_container_data(dockerClient, container_id):
     container_name = info["Name"].strip("/")
     container_ip = info["NetworkSettings"]["IPAddress"]
     if info["Config"]["Domainname"]:
-        container_hostname = f"{container_hostname}.{info["Config"]["Domainname"]}"
+        container_hostname = f'{container_hostname}.{info["Config"]["Domainname"]}'
     
     result = []
 
@@ -92,7 +92,7 @@ def update_hosts_file():
 
     for id,addresses in hosts.items():
         for addr in addresses:
-            print(f"ip: {addr["ip"]} domains: {addr["domains"]}")
+            print(f'ip: {addr["ip"]} domains: {addr["domains"]}')
 
     #read all the lines of thge original file
     lines = []
@@ -115,12 +115,12 @@ def update_hosts_file():
         
         for id, addresses in hosts.items():
             for addr in addresses:
-                lines.append(f"{addr["ip"]}    {"   ".join(addr["domains"])}\n")
+                lines.append(f'{addr["ip"]}    {"   ".join(addr["domains"])}\n')
         
         lines.append("#-----Do-not-add-hosts-after-this-line-----\n\n")
 
     #write it on the auxiliar file
-    aux_file_path = f"{hosts_path}.aux"
+    aux_file_path = f'{hosts_path}.aux'
     with open(aux_file_path,"w") as aux_hosts:
         aux_hosts.writelines(lines)
 
