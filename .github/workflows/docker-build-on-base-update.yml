@@ -57,7 +57,7 @@ jobs:
       - name: Install cosign
         uses: sigstore/cosign-installer@v3.1.1
         with:
-          cosign-release: 'v1.13.1'
+          cosign-release: 'v2.2.3'
         if: ${{ github.event_name != 'pull_request' && steps.baseupdatecheck.outputs.differs == 'true' }}
 
       # Setup QEMU: https://github.com/docker/setup-qemu-action
@@ -116,8 +116,6 @@ jobs:
       # transparency data even for private images, pass --force to cosign below.
       # https://github.com/sigstore/cosign
       - name: Sign the published Docker image
-        env:
-          COSIGN_EXPERIMENTAL: "true"
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
